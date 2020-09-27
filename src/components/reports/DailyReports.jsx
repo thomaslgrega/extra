@@ -19,7 +19,7 @@ export const DailyReports = () => {
     const transactions = JSON.parse(localStorage.getItem('ExtraAppTransactions') || JSON.stringify([]))
     let total = 0;
     transactions.forEach(transaction => {
-      if (transaction.date === date && parseFloat(transaction.amount) < 0) {
+      if (transaction.date === date && transaction.type === "expense") {
         total += parseFloat(transaction.amount);
       }
     })
@@ -29,7 +29,7 @@ export const DailyReports = () => {
 
   const dailyBreakdown = () => {
     const transactions = JSON.parse(localStorage.getItem('ExtraAppTransactions') || JSON.stringify([]))
-    const categories = ['Groceries', 'Personal', 'Utilities', 'Other'];
+    const categories = ['Groceries', 'Personal', 'Utilities', 'Entertainment', 'Other'];
     const breakdown = [];
     categories.forEach(category => {
       let total = 0;
@@ -46,7 +46,7 @@ export const DailyReports = () => {
 
   const [date, setDate] = useState(todaysDate);
   const data = {
-    labels: ['Groceries', 'Personal', 'Utilities', 'Other'],
+    labels: ['Groceries', 'Personal', 'Utilities', 'Entertainment', 'Other'],
     datasets: [
       {
         label: 'Rainfall',

@@ -1,22 +1,17 @@
 import React from 'react'
 
 export const TransactionItem = ({ transaction, handleDelete }) => {
-  const renderAmount = () => {
-    if (transaction.amount < 0) {
-      return (
-        <td className='negative'>-${Math.abs(transaction.amount).toFixed(2)}</td>
-      )
+  const checkTypeForAmount = () => {
+    if (transaction.type === 'expense') {
+      return `-$${(parseFloat(transaction.amount)).toFixed(2)}`;
     } else {
-      return (
-        <td className='positive'>${parseFloat(transaction.amount).toFixed(2)}</td>
-      )
+      return `$${(parseFloat(transaction.amount)).toFixed(2)}`
     }
   }
-
   return (
     <tr>
       <td>{transaction.category}</td>
-      {renderAmount()}
+      <td className={`${transaction.type}`}>{checkTypeForAmount()}</td>
       <td>{transaction.date}</td>
       <td>{transaction.description}</td>
       <td onClick={() => handleDelete(transaction.id)}>Delete</td>

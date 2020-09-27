@@ -90,11 +90,6 @@ export const WeeklyReports = () => {
     <div>
       <input type="date" value={date} onChange={e => setDate(e.target.value)} />
       <span>${totalExpenses()}</span>
-      <div>
-        {
-          getWeek().map((day, i) => <div key={i}>{day}</div>)
-        }
-      </div>
       <div className='line-graph-container'>
         <Line
           data={data}

@@ -2,14 +2,21 @@ import React, { useState, useEffect } from 'react';
 import { AccountItem } from './AccountItem';
 
 export const Summary = () => {
-  const [income, setIncome] = useState(() => {
+  const [cashAccounts, setCashAccounts] = useState(JSON.parse(localStorage.getItem('ExtraAppCashAccounts') || JSON.stringify([])));
+  const [creditAccounts, setCreditAccounts] = useState(JSON.parse(localStorage.getItem('ExtraAppCreditAccounts') || JSON.stringify([])));
+  const [bankAccounts, setBankAccounts] = useState(JSON.parse(localStorage.getItem('ExtraAppBankAccounts') || JSON.stringify([])));
+
+  const [assets, setAssets] = useState(() => {
     const transactions = JSON.parse(localStorage.getItem('ExtraAppTransactions') || JSON.stringify([]))
     let total = 0;
     transactions.forEach(transaction => {
-      if (transaction.amount > 0) {
+      if (transaction.type === 'income') {
         total += parseFloat(transaction.amount);
       }
     })
+    
+    const availableAccounts = [...cashAccounts, ...creditAccounts, ...bankAccounts];
+    availableAccounts.forEach(account => total += parseFloat(account.accountBalance));
 
     return total;
   })
@@ -18,7 +25,7 @@ export const Summary = () => {
     const transactions = JSON.parse(localStorage.getItem('ExtraAppTransactions') || JSON.stringify([]))
     let total = 0;
     transactions.forEach(transaction => {
-      if (transaction.amount < 0) {
+      if (transaction.type === 'expense') {
         total += parseFloat(transaction.amount);
       }
     })
@@ -26,10 +33,7 @@ export const Summary = () => {
     return total;
   })
 
-  const [balance, setBalance] = useState(income + expense);
-  const [cashAccounts, setCashAccounts] = useState(JSON.parse(localStorage.getItem('ExtraAppCashAccounts') || JSON.stringify([])));
-  const [creditAccounts, setCreditAccounts] = useState(JSON.parse(localStorage.getItem('ExtraAppCreditAccounts') || JSON.stringify([])));
-  const [bankAccounts, setBankAccounts] = useState(JSON.parse(localStorage.getItem('ExtraAppBankAccounts') || JSON.stringify([])));
+  const [balance, setBalance] = useState(assets - expense);
   const [institution, setInstitution] = useState('');
   const [accountBalance, setAccountBalance] = useState(0);
   const [accountCategory, setAccountCategory] = useState('');
@@ -76,12 +80,12 @@ export const Summary = () => {
           <h4>Balance</h4>
           <h2>${balance.toFixed(2)}</h2>
         </div>
-        <div className="income-container">
-          <h4>Income</h4>
-          <h3>${income.toFixed(2)}</h3>
+        <div className="assets-container">
+          <h4>Assets</h4>
+          <h3>${assets.toFixed(2)}</h3>
         </div>
         <div className="expense-container">
-          <h4>Expense</h4>
+          <h4>Expenses</h4>
           <h3>${expense.toFixed(2)}</h3>
         </div>
       </div>
@@ -109,9 +113,6 @@ export const Summary = () => {
               creditAccounts.map(account => <AccountItem key={account.id} account={account} />)
             }
           </div>
-        </div>
-        <div>
-          <span>Miscellaneous</span>
         </div>
       </div>
     </div>

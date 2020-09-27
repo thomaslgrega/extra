@@ -97,13 +97,6 @@ export const Transactions = () => {
     localStorage.setItem('ExtraAppTransactions', JSON.stringify(transactions));
   }
 
-  const handleDelete = id => {
-    const newTransactions = transactions.filter(transaction => transaction.id !== id)
-    localStorage.clear();
-    localStorage.setItem('ExtraAppTransactions', JSON.stringify(newTransactions));
-    setTransactions(newTransactions)
-  }
-
   const sortAmount = e => {
     localStorage.clear();
     const amountHeader = e.target;
@@ -123,6 +116,13 @@ export const Transactions = () => {
     localStorage.setItem('ExtraAppTransactions', JSON.stringify(transactions));
   }
 
+  const handleDelete = id => {
+    const newTransactions = transactions.filter(transaction => transaction.id !== id)
+    localStorage.clear();
+    localStorage.setItem('ExtraAppTransactions', JSON.stringify(newTransactions));
+    setTransactions(newTransactions)
+  }
+
   const getAccounts = () => {
     const cashAccounts = JSON.parse(localStorage.getItem('ExtraAppCashAccounts') || JSON.stringify([]))
     const creditAccounts = JSON.parse(localStorage.getItem('ExtraAppCreditAccounts') || JSON.stringify([]))
@@ -140,6 +140,7 @@ export const Transactions = () => {
           <option value="income">Income</option>
           <option value="personal">Personal</option>
           <option value="utilities">Utilities</option>
+          <option value="entertainment">Entertainment</option>
           <option value="other">Other</option>
         </select>
         <input required type="number" min='0' step='0.01' value={amount} placeholder="amount" onChange={e => setAmount(e.target.value)} />
