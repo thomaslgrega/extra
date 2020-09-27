@@ -1,6 +1,6 @@
 import React from 'react'
 
-export const TransactionItem = ({ transaction }) => {
+export const TransactionItem = ({ transaction, handleDelete }) => {
   const renderAmount = () => {
     if (transaction.amount < 0) {
       return (
@@ -19,6 +19,7 @@ export const TransactionItem = ({ transaction }) => {
       {renderAmount()}
       <td>{transaction.date}</td>
       <td>{transaction.description}</td>
+      <td onClick={() => handleDelete(transaction.id)}>Delete</td>
     </tr>
   )
 }

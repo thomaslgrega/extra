@@ -14,9 +14,8 @@ export const Transactions = () => {
     return `${year}-${month}-${day}`
   }
 
-  // const [transactions, setTransactions] = useState(JSON.parse(localStorage.getItem('mintbeanExtraApp') || JSON.stringify([])))
   const [transactions, setTransactions] = useState(() => {
-    const initial = JSON.parse(localStorage.getItem('mintbeanExtraApp') || JSON.stringify([]))
+    const initial = JSON.parse(localStorage.getItem('ExtraAppTransactions') || JSON.stringify([]))
 
     return initial.sort(function (a, b) {
       if (a.date > b.date) { return -1; }
@@ -24,14 +23,16 @@ export const Transactions = () => {
       return 0;
     });
 
-  })
+  });
+
   const [category, setCategory] = useState('');
   const [amount, setAmount] = useState(0);
   const [date, setDate] = useState(todaysDate);
   const [description, setDescription] = useState('');
+  const [account, setAccount] = useState('')
 
   useEffect(() => {
-    localStorage.setItem('mintbeanExtraApp', JSON.stringify(transactions));
+    localStorage.setItem('ExtraAppTransactions', JSON.stringify(transactions));
   }, [transactions]);
 
   const handleSubmit = e => {
@@ -65,7 +66,7 @@ export const Transactions = () => {
       }
     })
 
-    localStorage.setItem('mintbeanExtraApp', JSON.stringify(transactions));
+    localStorage.setItem('ExtraAppTransactions', JSON.stringify(transactions));
   }
 
   const sortDate = e => {
@@ -92,7 +93,14 @@ export const Transactions = () => {
       }
     })
 
-    localStorage.setItem('mintbeanExtraApp', JSON.stringify(transactions));
+    localStorage.setItem('ExtraAppTransactions', JSON.stringify(transactions));
+  }
+
+  const handleDelete = id => {
+    const newTransactions = transactions.filter(transaction => transaction.id !== id)
+    localStorage.clear();
+    localStorage.setItem('ExtraAppTransactions', JSON.stringify(newTransactions));
+    setTransactions(newTransactions)
   }
 
   const sortAmount = e => {
@@ -111,7 +119,14 @@ export const Transactions = () => {
       }
     })
     
-    localStorage.setItem('mintbeanExtraApp', JSON.stringify(transactions));
+    localStorage.setItem('ExtraAppTransactions', JSON.stringify(transactions));
+  }
+
+  const getAccounts = () => {
+    const cashAccounts = JSON.parse(localStorage.getItem('ExtraAppCashAccounts') || JSON.stringify([]))
+    const creditAccounts = JSON.parse(localStorage.getItem('ExtraAppCreditAccounts') || JSON.stringify([]))
+    const investmentAccounts = JSON.parse(localStorage.getItem('ExtraAppInvestmentAccounts') || JSON.stringify([]))
+    return [...cashAccounts, ...creditAccounts, ...investmentAccounts];
   }
   
   return (
@@ -121,12 +136,24 @@ export const Transactions = () => {
         <select required defaultValue='' name="category" onChange={e => setCategory(e.target.value)}>
           <option disabled value="">Category</option>
           <option value="groceries">Groceries</option>
+          <option value="income">Income</option>
           <option value="personal">Personal</option>
           <option value="utilities">Utilities</option>
           <option value="other">Other</option>
         </select>
         <input required type="number" step='0.01' value={amount} placeholder="amount" onChange={e => setAmount(e.target.value)} />
         <input type="date" value={date} onChange={e => setDate(e.target.value)} />
+        <select required defaultValue='' name="account" onChange={e => setAccount(e.target.value)}>
+          <option disabled value="">Choose an account</option>
+          {
+            getAccounts().map((account, i) => {
+              return (
+                <option key={i} value={`${account.institution}`}>{account.institution}</option>
+              )
+            })
+          }
+          <option value="groceries">Groceries</option>
+        </select>
         <input required type="text" value={description} placeholder='Add a description...' onChange={e => setDescription(e.target.value)} />
         <input type="submit" value="Add Transaction" />
       </form>
@@ -137,11 +164,12 @@ export const Transactions = () => {
             <th className='amount-header' onClick={e => sortAmount(e)}>Amount</th>
             <th className='date-header' onClick={e => sortDate(e)}>Date</th>
             <th>Description</th>
+            <th>Options</th>
           </tr>
         </thead>
         <tbody>
           {
-            transactions.map(transaction => <TransactionItem key={transaction.id} transaction={transaction} />)
+            transactions.map(transaction => <TransactionItem key={transaction.id} transaction={transaction} handleDelete={handleDelete} />)
           }
         </tbody>
       </table>

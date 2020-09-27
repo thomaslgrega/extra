@@ -7,6 +7,7 @@ export const Navbar = () => {
       <ul>
         <NavLink activeClassName='nav-active' exact to='/summary'>Summary</NavLink>
         <NavLink activeClassName='nav-active' exact to='/transactions'>Transactions</NavLink>
+        <NavLink activeClassName='nav-active' exact to='/report'>Reports</NavLink>
       </ul>
     </nav>
   )
