@@ -14,7 +14,17 @@ export const Transactions = () => {
     return `${year}-${month}-${day}`
   }
 
-  const [transactions, setTransactions] = useState(JSON.parse(localStorage.getItem('mintbeanExtraApp') || JSON.stringify([])))
+  // const [transactions, setTransactions] = useState(JSON.parse(localStorage.getItem('mintbeanExtraApp') || JSON.stringify([])))
+  const [transactions, setTransactions] = useState(() => {
+    const initial = JSON.parse(localStorage.getItem('mintbeanExtraApp') || JSON.stringify([]))
+
+    return initial.sort(function (a, b) {
+      if (a.date > b.date) { return -1; }
+      if (a.date < b.date) { return 1; }
+      return 0;
+    });
+
+  })
   const [category, setCategory] = useState('');
   const [amount, setAmount] = useState(0);
   const [date, setDate] = useState(todaysDate);
@@ -30,6 +40,79 @@ export const Transactions = () => {
     setCategory('');
     setAmount('');
   }
+
+  const sortCategory = e => {
+    localStorage.clear();
+    const categoryHeader = e.target;
+    const ascending = categoryHeader.classList.contains("ascending")
+
+    setTransactions(oldTransactions => {
+      let newTransactions = [...oldTransactions];
+      if (ascending) {
+        categoryHeader.classList.remove("ascending");
+        return newTransactions.sort(function (a, b) {
+          if (a.category > b.category) { return -1; }
+          if (a.category < b.category) { return 1; }
+          return 0;
+        });
+      } else {
+        categoryHeader.classList.add("ascending");
+        return newTransactions.sort(function (a, b) {
+          if (a.category < b.category) { return -1; }
+          if (a.category > b.category) { return 1; }
+          return 0;
+        });
+      }
+    })
+
+    localStorage.setItem('mintbeanExtraApp', JSON.stringify(transactions));
+  }
+
+  const sortDate = e => {
+    localStorage.clear();
+    const dateHeader = e.target;
+    const ascending = dateHeader.classList.contains("ascending")
+
+    setTransactions(oldTransactions => {
+      let newTransactions = [...oldTransactions];
+      if (!ascending) {
+        dateHeader.classList.add("ascending");
+        return newTransactions.sort(function (a, b) {
+          if (a.date < b.date) { return -1; }
+          if (a.date > b.date) { return 1; }
+          return 0;
+        });
+      } else {
+        dateHeader.classList.remove("ascending");
+        return newTransactions.sort(function (a, b) {
+          if (a.date > b.date) { return -1; }
+          if (a.date < b.date) { return 1; }
+          return 0;
+        });
+      }
+    })
+
+    localStorage.setItem('mintbeanExtraApp', JSON.stringify(transactions));
+  }
+
+  const sortAmount = e => {
+    localStorage.clear();
+    const amountHeader = e.target;
+    const ascending = amountHeader.classList.contains("ascending")
+
+    setTransactions(oldTransactions => {
+      let newTransactions = [...oldTransactions];
+      if (ascending) {
+        amountHeader.classList.remove("ascending")
+        return newTransactions.sort((a, b) => b.amount - a.amount);
+      } else {
+        amountHeader.classList.add("ascending")
+        return newTransactions.sort((a, b) => a.amount - b.amount);
+      }
+    })
+    
+    localStorage.setItem('mintbeanExtraApp', JSON.stringify(transactions));
+  }
   
   return (
     <div>
@@ -42,17 +125,17 @@ export const Transactions = () => {
           <option value="utilities">Utilities</option>
           <option value="other">Other</option>
         </select>
-        <input required type="number" step='0.01' value={amount} placeholder="amount" onChange={e => setAmount(e.target.value)}/>
-        <input type="date" value={date} onChange={e => setDate(e.target.value)}/>
-        <input required type="text" value={description} placeholder='Add a description...' onChange={e => setDescription(e.target.value)}/>
-        <input type="submit" value="Add Transaction"/>
+        <input required type="number" step='0.01' value={amount} placeholder="amount" onChange={e => setAmount(e.target.value)} />
+        <input type="date" value={date} onChange={e => setDate(e.target.value)} />
+        <input required type="text" value={description} placeholder='Add a description...' onChange={e => setDescription(e.target.value)} />
+        <input type="submit" value="Add Transaction" />
       </form>
       <table>
         <thead>
           <tr>
-            <th>Category</th>
-            <th>Amount</th>
-            <th>Date</th>
+            <th className='category-header' onClick={e => sortCategory(e)}>Category</th>
+            <th className='amount-header' onClick={e => sortAmount(e)}>Amount</th>
+            <th className='date-header' onClick={e => sortDate(e)}>Date</th>
             <th>Description</th>
           </tr>
         </thead>
