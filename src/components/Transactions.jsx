@@ -29,7 +29,8 @@ export const Transactions = () => {
   const [amount, setAmount] = useState(0);
   const [date, setDate] = useState(todaysDate);
   const [description, setDescription] = useState('');
-  const [account, setAccount] = useState('')
+  const [account, setAccount] = useState('');
+  const [type, setType] = useState('');
 
   useEffect(() => {
     localStorage.setItem('ExtraAppTransactions', JSON.stringify(transactions));
@@ -37,7 +38,7 @@ export const Transactions = () => {
 
   const handleSubmit = e => {
     e.preventDefault();
-    setTransactions(oldTransactions => [{ id: Math.floor(Math.random() * 9999999999), category, amount, date, description }, ...oldTransactions])
+    setTransactions(oldTransactions => [{ id: Math.floor(Math.random() * 9999999999), category, amount, date, type, description }, ...oldTransactions])
     setCategory('');
     setAmount('');
   }
@@ -125,8 +126,8 @@ export const Transactions = () => {
   const getAccounts = () => {
     const cashAccounts = JSON.parse(localStorage.getItem('ExtraAppCashAccounts') || JSON.stringify([]))
     const creditAccounts = JSON.parse(localStorage.getItem('ExtraAppCreditAccounts') || JSON.stringify([]))
-    const investmentAccounts = JSON.parse(localStorage.getItem('ExtraAppInvestmentAccounts') || JSON.stringify([]))
-    return [...cashAccounts, ...creditAccounts, ...investmentAccounts];
+    const bankAccounts = JSON.parse(localStorage.getItem('ExtraAppBankAccounts') || JSON.stringify([]))
+    return [...cashAccounts, ...creditAccounts, ...bankAccounts];
   }
   
   return (
@@ -141,7 +142,7 @@ export const Transactions = () => {
           <option value="utilities">Utilities</option>
           <option value="other">Other</option>
         </select>
-        <input required type="number" step='0.01' value={amount} placeholder="amount" onChange={e => setAmount(e.target.value)} />
+        <input required type="number" min='0' step='0.01' value={amount} placeholder="amount" onChange={e => setAmount(e.target.value)} />
         <input type="date" value={date} onChange={e => setDate(e.target.value)} />
         <select required defaultValue='' name="account" onChange={e => setAccount(e.target.value)}>
           <option disabled value="">Choose an account</option>
@@ -152,7 +153,11 @@ export const Transactions = () => {
               )
             })
           }
-          <option value="groceries">Groceries</option>
+        </select>
+        <select required defaultValue='' name="type" onChange={e => setType(e.target.value)}>
+          <option disabled value="">Select entry type</option>
+          <option value="expense">Expense</option>
+          <option value="income">Income</option>
         </select>
         <input required type="text" value={description} placeholder='Add a description...' onChange={e => setDescription(e.target.value)} />
         <input type="submit" value="Add Transaction" />

@@ -67,7 +67,7 @@ export const Summary = () => {
           <option disabled value="">Select Category</option>
           <option value="cash">Cash</option>
           <option value="credit">Credit</option>
-          <option value="banks">Banks</option>
+          <option value="banks">Bank Account</option>
         </select>
         <input type="submit" value="Add Account" />
       </form>

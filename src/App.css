@@ -1,0 +1,20 @@
+.line-graph-container {
+  width: 70%;
+  margin: 0 auto;
+}
+
+.pie-chart-container {
+  position: relative;
+  width: 60%;
+  margin: 0 auto;
+}
+
+.empty-pie-message {
+  font-size: 30px;
+  color: #666666;
+  text-align: center;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  top: 40%;
+}

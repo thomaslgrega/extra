@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import moment from 'moment';
+import { Line } from 'react-chartjs-2';
 
 export const WeeklyReports = () => {
   const todaysDate = () => {
@@ -23,7 +24,6 @@ export const WeeklyReports = () => {
     while (week.length < 7) {
       if (dayOfWeek > 0) {
         day = referenceDate.clone().subtract(dayOfWeek, 'days').format("YYYY-MM-DD");
-        debugger
         day.split('/').join('-');
         week.push(day);
       } else if (dayOfWeek < 0) {
@@ -52,7 +52,39 @@ export const WeeklyReports = () => {
     return total.toFixed(2);
   }
 
+  const populateData = () => {
+    const transactions = JSON.parse(localStorage.getItem('ExtraAppTransactions') || JSON.stringify([]))
+    const data = [];
+    const week = getWeek();
+    week.forEach(day => {
+      let expenseForDay = 0;
+      transactions.forEach(transaction => {
+        if (transaction.date === day) {
+          expenseForDay += parseFloat(transaction.amount);
+        }
+      })
+      data.push(expenseForDay.toFixed(2));
+    })
+
+    return data;
+  }
+
   const [date, setDate] = useState(todaysDate);
+
+  const data = {
+    labels: getWeek(),
+    datasets: [
+      {
+        label: 'Weekly Expenses',
+        fill: true,
+        lineTension: 0.2,
+        backgroundColor: 'rgba(12, 238, 99, 1)',
+        borderColor: 'rgba(0, 0, 0, 1)',
+        borderWidth: 2,
+        data: populateData()
+      }
+    ]
+  }
 
   return (
     <div>
@@ -60,8 +92,24 @@ export const WeeklyReports = () => {
       <span>${totalExpenses()}</span>
       <div>
         {
-          getWeek().map(day => <div>{day}</div>)
+          getWeek().map((day, i) => <div key={i}>{day}</div>)
         }
+      </div>
+      <div className='line-graph-container'>
+        <Line
+          data={data}
+          options={{
+            title: {
+              display: true,
+              text: `Weekly Expense Breakdown`,
+              fontSize: 30
+            },
+            legend: {
+              display: false,
+            }, 
+            // maintainAspectRatio: false,
+          }}
+        />
       </div>
     </div>
   )
