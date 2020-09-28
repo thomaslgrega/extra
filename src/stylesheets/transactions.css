@@ -54,6 +54,10 @@ thead {
   cursor: pointer;
 }
 
+.fa-edit {
+  margin-right: 15px;
+}
+
 .income {
   color: rgb(10, 173, 72);
 }
