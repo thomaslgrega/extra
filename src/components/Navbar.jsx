@@ -19,7 +19,7 @@ export const Navbar = () => {
   return (
     <nav className='main-nav-container'>
       <div className='main-nav-logo'>
-        <Link to='/summary' className='logo-container' onMouseEnter={() => expandLogo()} onMouseLeave={() => shrinkLogo()}>
+        <Link to='/' className='logo-container' onMouseEnter={() => expandLogo()} onMouseLeave={() => shrinkLogo()}>
           <span className='first-logo-span'>Expense</span>
           <span className='second-logo-span'>Tracker</span>
         </Link>

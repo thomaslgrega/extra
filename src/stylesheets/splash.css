@@ -1,0 +1,19 @@
+.splash-header {
+  text-align: center;
+  margin-top: 30px;
+  font-size: 46px;
+  font-weight: 900;
+  color: #2b2d42;
+}
+
+.splash-first-container {
+  display: flex;
+}
+
+.first-container-left-text {
+  width: 30%;
+}
+
+.first-container-image {
+  width: 70%;
+}
