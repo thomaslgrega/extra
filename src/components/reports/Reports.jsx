@@ -8,11 +8,11 @@ export const Reports = () => {
   }
 
   return (
-    <div>
-      <div>
-        <NavLink activeClassName='reports-nav-active' exact to='/report/daily'>Daily</NavLink>
-        <NavLink activeClassName='reports-nav-active' exact to='/report/week'>Week</NavLink>
-        <NavLink activeClassName='reports-nav-active' exact to='/report/month'>Month</NavLink>
+    <div className='reports-nav-links-container'>
+      <div className='reports-nav-links'>
+        <NavLink className='report-nav-link' activeClassName='reports-nav-active' exact to='/report'>Daily</NavLink>
+        <NavLink className='report-nav-link' activeClassName='reports-nav-active' exact to='/report/week'>Week</NavLink>
+        <NavLink className='report-nav-link' activeClassName='reports-nav-active' exact to='/report/month'>Month</NavLink>
       </div>
     </div>
   )

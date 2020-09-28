@@ -5,6 +5,7 @@ import './stylesheets/App.css';
 import './stylesheets/reset.css';
 import './stylesheets/summary.css';
 import './stylesheets/transactions.css';
+import './stylesheets/reports.css';
 import { Summary } from './components/Summary';
 import { Transactions } from './components/Transactions';
 import { Reports } from './components/reports/Reports';
@@ -20,7 +21,7 @@ function App() {
           <Route path='/summary' component={Summary} />
           <Route path='/transactions' component={Transactions} />
           <Route path='/report' component={Reports} />
-          <Route path='/report/daily' component={DailyReports} />
+          <Route path='/report' exact component={DailyReports} />
           <Route path='/report/week' component={WeeklyReports} />
           <Route path='/report/month' component={MonthlyReports} />
         </div>

@@ -92,9 +92,13 @@ export const WeeklyReports = () => {
   }
 
   return (
-    <div>
-      <input type="date" value={date} onChange={e => setDate(e.target.value)} />
-      <span>${totalExpenses()}</span>
+    <div className='reports-content'>
+      <div>
+        <h4 className='total-reports-header'>Total Weekly Expense</h4>
+        <h3 className='reports-total-expenses'>${totalExpenses()}</h3>
+      </div>
+      <label className='reports-date-label'>Choose a Day</label>
+      <input className='reports-date-select' type="date" value={date} onChange={e => setDate(e.target.value)} />
       <div className='line-graph-container'>
         <Line
           data={data}

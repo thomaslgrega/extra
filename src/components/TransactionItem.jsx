@@ -20,7 +20,7 @@ export const TransactionItem = ({ transaction, handleDelete }) => {
       <td className={`${transaction.type} transactions-table-data`}>{checkTypeForAmount()}</td>
       <td className='transactions-table-data' >{transaction.date}</td>
       <td className='transactions-table-data' >{transaction.description}</td>
-      <td className='transactions-table-data' onClick={() => handleDelete(transaction.id)}><i class="fas fa-trash-alt"></i></td>
+      <td className='transactions-table-data' onClick={() => handleDelete(transaction.id)}><i className="fas fa-trash-alt"></i></td>
     </tr>
   )
 }
