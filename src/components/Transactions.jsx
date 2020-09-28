@@ -32,20 +32,73 @@ export const Transactions = () => {
   const [account, setAccount] = useState('');
   const [type, setType] = useState('');
 
+  const [cashAccounts, setCashAccounts] = useState(JSON.parse(localStorage.getItem('ExtraAppCashAccounts') || JSON.stringify([])));
+  const [creditAccounts, setCreditAccounts] = useState(JSON.parse(localStorage.getItem('ExtraAppCreditAccounts') || JSON.stringify([])));
+  const [bankAccounts, setBankAccounts] = useState(JSON.parse(localStorage.getItem('ExtraAppBankAccounts') || JSON.stringify([])));
+
   useEffect(() => {
     localStorage.setItem('ExtraAppTransactions', JSON.stringify(transactions));
   }, [transactions]);
 
+  useEffect(() => {
+    localStorage.setItem('ExtraAppCashAccounts', JSON.stringify(cashAccounts));
+  }, [cashAccounts]);
+
+  useEffect(() => {
+    localStorage.setItem('ExtraAppCreditAccounts', JSON.stringify(creditAccounts));
+  }, [creditAccounts]);
+
+  useEffect(() => {
+    localStorage.setItem('ExtraAppBankAccounts', JSON.stringify(bankAccounts));
+  }, [bankAccounts]);
+
   const handleSubmit = e => {
     e.preventDefault();
-    setTransactions(oldTransactions => [{ id: Math.floor(Math.random() * 9999999999), category, amount, date, type, description }, ...oldTransactions])
+    setTransactions(oldTransactions => [{ id: Math.floor(Math.random() * 9999999999), category, amount, date, type, description, account }, ...oldTransactions])
     setCategory('');
     setAmount('');
+
+    cashAccounts.forEach(cashAccount =>  {
+      if (cashAccount.institution === account) {
+        if (type === 'income') {
+          cashAccount.accountBalance = parseInt(cashAccount.accountBalance) + parseInt(amount);
+          setCashAccounts(cashAccounts.slice());
+        } else {
+          cashAccount.accountBalance = parseInt(cashAccount.accountBalance) - parseInt(amount);
+          setCashAccounts(cashAccounts.slice());
+        }
+      }
+    })
+
+    creditAccounts.forEach(creditAccount => {
+      if (creditAccount.institution === account) {
+        if (type === 'income') {
+          creditAccount.accountBalance = parseInt(creditAccount.accountBalance) + parseInt(amount);
+          setCreditAccounts(creditAccounts.slice());
+        } else {
+          creditAccount.accountBalance = parseInt(creditAccount.accountBalance) - parseInt(amount);
+          setCreditAccounts(creditAccounts.slice());
+        }
+      }
+    })
+
+    bankAccounts.forEach(bankAccount => {
+      if (bankAccount.institution === account) {
+        if (type === 'income') {
+          bankAccount.accountBalance = parseInt(bankAccount.accountBalance) + parseInt(amount);
+          setBankAccounts(bankAccounts.slice());
+        } else {
+          bankAccount.accountBalance = parseInt(bankAccount.accountBalance) - parseInt(amount);
+          setBankAccounts(bankAccounts.slice());
+        }
+      }
+    })
   }
 
   const sortCategory = e => {
-    localStorage.clear();
     const categoryHeader = e.target;
+    const amountHeader = document.querySelector('.amount-header')
+    const dateHeader = document.querySelector('.date-header')
     const ascending = categoryHeader.classList.contains("ascending")
 
     setTransactions(oldTransactions => {
@@ -59,6 +112,8 @@ export const Transactions = () => {
         });
       } else {
         categoryHeader.classList.add("ascending");
+        amountHeader.classList.remove("ascending");
+        dateHeader.classList.remove("ascending");
         return newTransactions.sort(function (a, b) {
           if (a.category < b.category) { return -1; }
           if (a.category > b.category) { return 1; }
@@ -71,14 +126,17 @@ export const Transactions = () => {
   }
 
   const sortDate = e => {
-    localStorage.clear();
     const dateHeader = e.target;
+    const amountHeader = document.querySelector('.amount-header')
+    const categoryHeader = document.querySelector('.category-header')
     const ascending = dateHeader.classList.contains("ascending")
 
     setTransactions(oldTransactions => {
       let newTransactions = [...oldTransactions];
       if (!ascending) {
         dateHeader.classList.add("ascending");
+        amountHeader.classList.remove("ascending")
+        categoryHeader.classList.remove("ascending")
         return newTransactions.sort(function (a, b) {
           if (a.date < b.date) { return -1; }
           if (a.date > b.date) { return 1; }
@@ -98,18 +156,26 @@ export const Transactions = () => {
   }
 
   const sortAmount = e => {
-    localStorage.clear();
     const amountHeader = e.target;
+    const categoryHeader = document.querySelector('.category-header')
+    const dateHeader = document.querySelector('.date-header')
     const ascending = amountHeader.classList.contains("ascending")
 
     setTransactions(oldTransactions => {
-      let newTransactions = [...oldTransactions];
+      let incomeTransactions = oldTransactions.filter(transaction => transaction.type === 'income');
+      let expenseTransactions = oldTransactions.filter(transaction => transaction.type === 'expense');
       if (ascending) {
         amountHeader.classList.remove("ascending")
-        return newTransactions.sort((a, b) => b.amount - a.amount);
+        incomeTransactions.sort((a, b) => b.amount - a.amount);
+        expenseTransactions.sort((a, b) => b.amount - a.amount);
+        return [...incomeTransactions, ...expenseTransactions];
       } else {
         amountHeader.classList.add("ascending")
-        return newTransactions.sort((a, b) => a.amount - b.amount);
+        categoryHeader.classList.remove("ascending")
+        dateHeader.classList.remove("ascending")
+        incomeTransactions.sort((a, b) => a.amount - b.amount);
+        expenseTransactions.sort((a, b) => a.amount - b.amount);
+        return [...expenseTransactions, ...incomeTransactions]
       }
     })
     
@@ -117,9 +183,55 @@ export const Transactions = () => {
   }
 
   const handleDelete = id => {
-    const newTransactions = transactions.filter(transaction => transaction.id !== id)
-    localStorage.clear();
-    localStorage.setItem('ExtraAppTransactions', JSON.stringify(newTransactions));
+    let transactionToDelete;
+    const newTransactions = [];
+    transactions.forEach(transaction => {
+      if (transaction.id === id) {
+        transactionToDelete = transaction;
+      } else {
+        newTransactions.push(transaction);
+      }
+    })
+
+    cashAccounts.forEach(cashAccount => {
+      if (cashAccount.institution === transactionToDelete.account) {
+        if (transactionToDelete.type === 'income') {
+          cashAccount.accountBalance = parseInt(cashAccount.accountBalance) - parseInt(transactionToDelete.amount);
+          setCashAccounts(cashAccounts.slice());
+        } else {
+          cashAccount.accountBalance = parseInt(cashAccount.accountBalance) + parseInt(transactionToDelete.amount);
+          setCashAccounts(cashAccounts.slice());
+        }
+      }
+    })
+
+    creditAccounts.forEach(creditAccount => {
+      if (creditAccount.institution === transactionToDelete.account) {
+        if (transactionToDelete.type === 'income') {
+          creditAccount.accountBalance = parseInt(creditAccount.accountBalance) - parseInt(transactionToDelete.amount);
+          setCreditAccounts(creditAccounts.slice());
+        } else {
+          creditAccount.accountBalance = parseInt(creditAccount.accountBalance) + parseInt(transactionToDelete.amount);
+          setCreditAccounts(creditAccounts.slice());
+        }
+      }
+    })
+
+    debugger
+    bankAccounts.forEach(bankAccount => {
+      if (bankAccount.institution === transactionToDelete.account) {
+        if (transactionToDelete.type === 'income') {
+          bankAccount.accountBalance = parseInt(bankAccount.accountBalance) - parseInt(transactionToDelete.amount);
+          setBankAccounts(bankAccounts.slice());
+        } else {
+          bankAccount.accountBalance = parseInt(bankAccount.accountBalance) + parseInt(transactionToDelete.amount);
+          setBankAccounts(bankAccounts.slice());
+        }
+      }
+    })
+    
+    // const newTransactions = transactions.filter(transaction => transaction.id !== id)
+    // localStorage.setItem('ExtraAppTransactions', JSON.stringify(newTransactions));
     setTransactions(newTransactions)
   }
 

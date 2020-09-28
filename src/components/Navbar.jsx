@@ -25,9 +25,12 @@ export const Navbar = () => {
         </Link>
       </div>
       <div className='main-nav-bar'>
-        <NavLink className='main-nav-links' activeClassName='nav-active' exact to='/summary'>Summary</NavLink>
-        <NavLink className='main-nav-links' activeClassName='nav-active' exact to='/transactions'>Transactions</NavLink>
-        <NavLink className='main-nav-links' activeClassName='nav-active' exact to='/report/daily'>Reports</NavLink>
+        <div className="nav-bar-links-container">
+          <NavLink className='main-nav-links' activeClassName='nav-active' exact to='/summary'>Summary</NavLink>
+          <NavLink className='main-nav-links' activeClassName='nav-active' exact to='/transactions'>Transactions</NavLink>
+          <NavLink className='main-nav-links' activeClassName='nav-active' exact to='/report/daily'>Reports</NavLink>
+
+        </div>
       </div>
     </nav>
   )

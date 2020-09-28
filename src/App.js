@@ -1,8 +1,9 @@
 import React from 'react';
 import { Navbar } from './components/Navbar';
 import { Route, HashRouter } from 'react-router-dom';
-import './App.css';
-import './reset.css';
+import './stylesheets/App.css';
+import './stylesheets/reset.css';
+import './stylesheets/summary.css';
 import { Summary } from './components/Summary';
 import { Transactions } from './components/Transactions';
 import { Reports } from './components/reports/Reports';

@@ -22,12 +22,12 @@ export const MonthlyReports = () => {
       const transactionMonth = transaction.date.slice(5, 7);
       const transactionYear = transaction.date.slice(0, 4);
       
-      if (transactionMonth === date.slice(5, 7) && transactionYear === date.slice(0, 4) && parseFloat(transaction.amount) < 0) {
+      if (transactionMonth === date.slice(5, 7) && transactionYear === date.slice(0, 4) && transaction.type === 'expense') {
         total += parseFloat(transaction.amount);
       }
     })
 
-    return total.toFixed(2);
+    return formatNumber(total.toFixed(2));
   }
 
   const getMonth = () => {
@@ -59,6 +59,10 @@ export const MonthlyReports = () => {
     })
 
     return data;
+  }
+
+  const formatNumber = (num) => {
+    return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   }
 
   const [date, setDate] = useState(todaysDate);

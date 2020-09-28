@@ -3,11 +3,16 @@ import React from 'react'
 export const TransactionItem = ({ transaction, handleDelete }) => {
   const checkTypeForAmount = () => {
     if (transaction.type === 'expense') {
-      return `-$${(parseFloat(transaction.amount)).toFixed(2)}`;
+      return `-$${formatNumber((parseFloat(transaction.amount)).toFixed(2))}`;
     } else {
-      return `$${(parseFloat(transaction.amount)).toFixed(2)}`
+      return `$${formatNumber((parseFloat(transaction.amount)).toFixed(2))}`
     }
   }
+
+  const formatNumber = (num) => {
+    return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  }
+  
   return (
     <tr>
       <td>{transaction.category}</td>

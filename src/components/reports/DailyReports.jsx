@@ -15,6 +15,10 @@ export const DailyReports = () => {
     return `${year}-${month}-${day}`
   }
 
+  const formatNumber = (num) => {
+    return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  }
+
   const totalExpenses = () => {
     const transactions = JSON.parse(localStorage.getItem('ExtraAppTransactions') || JSON.stringify([]))
     let total = 0;
@@ -24,7 +28,7 @@ export const DailyReports = () => {
       }
     })
 
-    return total.toFixed(2);
+    return formatNumber(total.toFixed(2));
   }
 
   const dailyBreakdown = () => {

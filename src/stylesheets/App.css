@@ -23,17 +23,27 @@
   display: inline-block;
   display: flex;
   justify-content: space-between;
+  /* width: 320px; */
+  width: 100%;
+}
+
+.nav-bar-links-container {
+  display: flex;
+  justify-content: space-between;
   width: 320px;
+  margin: 0 auto;
+  margin-left: 60px;
 }
 
 .main-nav-links {
   color: #f7f7f7;
   text-decoration: none;
+  letter-spacing: 1px;
 }
 
 .main-nav-logo {
   display: inline-block;
-  width: 300px;
+  width: 350px;
 }
 
 .nav-active {
@@ -65,10 +75,11 @@
   display: inline-block;
   overflow: hidden;
   width: 33px;
+  transition-duration: 0.3s;
 }
 
 .first-logo-span.expand {
-  width: 116px;
+  width: 117px;
   transition-duration: 0.3s;
 }
 
@@ -84,4 +95,5 @@
   display: inline-block;
   overflow: hidden;
   width: 44px;
+  transition-duration: 0.3s;
 }

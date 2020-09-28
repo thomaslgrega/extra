@@ -1,10 +1,14 @@
 import React from 'react'
 
-export const AccountItem = ({ account }) => {
+export const AccountItem = ({ account, formatNumber, index }) => {
+  const checkIndex = () => {
+    return index % 2 === 0 ? 'even' : 'odd'
+  }
+
   return (
-    <div>
-      <div>{account.institution}</div>
-      <div>${account.accountBalance}</div>
+    <div className={`account-item-container color-${checkIndex()}`}>
+      <div className='institution-name'>{account.institution}</div>
+      <div>${formatNumber(parseFloat(account.accountBalance).toFixed(2))}</div>
     </div>
   )
 }
