@@ -50,23 +50,25 @@ export const DailyReports = () => {
 
   const [date, setDate] = useState(todaysDate);
   const data = {
-    labels: ['Groceries', 'Personal', 'Utilities', 'Entertainment', 'Other'],
+    labels: ['Groceries', 'Income', 'Personal', 'Utilities', 'Entertainment', 'Other'],
     datasets: [
       {
         label: 'Rainfall',
         backgroundColor: [
-          '#B21F00',
-          '#C9DE00',
-          '#2FDE00',
-          '#00A6B4',
-          '#6800B4'
+          '#f94144',
+          '#f3722c',
+          '#277da1',
+          '#43aa8b',
+          '#f9c74f',
+          '#98c1d9'
         ],
         hoverBackgroundColor: [
-          '#501800',
-          '#4B5000',
-          '#175000',
-          '#003350',
-          '#35014F'
+          '#a73234',
+          '#b15727',
+          '#265d75',
+          '#2f6e5b',
+          '#ac8a3b',
+          '#6c97af'
         ],
         data: dailyBreakdown()
       }

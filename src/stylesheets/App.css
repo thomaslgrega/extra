@@ -41,6 +41,10 @@
   letter-spacing: 1px;
 }
 
+.main-nav-links:hover {
+  font-weight: 900;
+}
+
 .main-nav-logo {
   display: inline-block;
   width: 350px;

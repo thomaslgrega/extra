@@ -73,7 +73,8 @@ export const MonthlyReports = () => {
         label: 'Monthly Expenses',
         fill: true,
         lineTension: 0.2,
-        backgroundColor: 'rgba(12, 238, 99, 1)',
+        // backgroundColor: 'rgba(12, 238, 99, 1)',
+        backgroundColor: 'tomato',
         borderColor: 'rgba(0,0,0,1)',
         borderWidth: 2,
         data: populateData()

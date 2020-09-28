@@ -4,6 +4,7 @@ import { Route, HashRouter } from 'react-router-dom';
 import './stylesheets/App.css';
 import './stylesheets/reset.css';
 import './stylesheets/summary.css';
+import './stylesheets/transactions.css';
 import { Summary } from './components/Summary';
 import { Transactions } from './components/Transactions';
 import { Reports } from './components/reports/Reports';

@@ -6,20 +6,6 @@ export const Summary = () => {
   const [creditAccounts, setCreditAccounts] = useState(JSON.parse(localStorage.getItem('ExtraAppCreditAccounts') || JSON.stringify([])));
   const [bankAccounts, setBankAccounts] = useState(JSON.parse(localStorage.getItem('ExtraAppBankAccounts') || JSON.stringify([])));
 
-  // const [assets, setAssets] = useState(() => {
-  //   const transactions = JSON.parse(localStorage.getItem('ExtraAppTransactions') || JSON.stringify([]))
-  //   let total = 0;
-  //   transactions.forEach(transaction => {
-  //     if (transaction.type === 'income') {
-  //       total += parseFloat(transaction.amount);
-  //     }
-  //   })
-    
-  //   const availableAccounts = [...cashAccounts, ...creditAccounts, ...bankAccounts];
-  //   availableAccounts.forEach(account => total += parseFloat(account.accountBalance));
-
-  //   return total;
-  // })
   const [balance, setBalance] = useState(() => {
     const transactions = JSON.parse(localStorage.getItem('ExtraAppTransactions') || JSON.stringify([]))
     let total = 0;
@@ -42,7 +28,6 @@ export const Summary = () => {
     return total;
   })
 
-  // const [balance, setBalance] = useState(assets - expense);
   const [institution, setInstitution] = useState('');
   const [accountBalance, setAccountBalance] = useState(0);
   const [accountCategory, setAccountCategory] = useState('');
@@ -114,7 +99,7 @@ export const Summary = () => {
           </select>
           <div className='summary-button-containers'>
             <input className='summary-submit-btn' type="submit" value="Add Account" />
-            <span className='summary-cancel-btn'>Cancel</span>
+            <span className='summary-cancel-btn' onClick={e => closeModal(e)}>Cancel</span>
           </div>
         </form>
       </div>
@@ -133,7 +118,7 @@ export const Summary = () => {
       <hr className='hr-divider'/>
       <div className='accounts-container'>
         <div className="accounts-container-header">
-          <h3 className='account-header'>Accounts</h3>
+          <h3 className='accounts-header'>Accounts</h3>
           <span className='add-account-btn' onClick={openModal}>Add Account</span>
         </div>
         <div>

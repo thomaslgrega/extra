@@ -95,10 +95,43 @@ export const Transactions = () => {
     })
   }
 
+  const sortAccount = e => {
+    const accountHeader = e.target;
+    const amountHeader = document.querySelector('.amount-header')
+    const dateHeader = document.querySelector('.date-header')
+    const categoryHeader = document.querySelector('.category-header');
+    const ascending = accountHeader.classList.contains("ascending")
+
+    setTransactions(oldTransactions => {
+      let newTransactions = [...oldTransactions];
+      if (ascending) {
+        accountHeader.classList.remove("ascending");
+        return newTransactions.sort(function (a, b) {
+          if (a.account > b.account) { return -1; }
+          if (a.account < b.account) { return 1; }
+          return 0;
+        });
+      } else {
+        accountHeader.classList.add("ascending");
+        categoryHeader.classList.remove("ascending");
+        amountHeader.classList.remove("ascending");
+        dateHeader.classList.remove("ascending");
+        return newTransactions.sort(function (a, b) {
+          if (a.account < b.account) { return -1; }
+          if (a.account > b.account) { return 1; }
+          return 0;
+        });
+      }
+    })
+
+    localStorage.setItem('ExtraAppTransactions', JSON.stringify(transactions));
+  }
+
   const sortCategory = e => {
     const categoryHeader = e.target;
     const amountHeader = document.querySelector('.amount-header')
     const dateHeader = document.querySelector('.date-header')
+    const accountHeader = document.querySelector('.account-header')
     const ascending = categoryHeader.classList.contains("ascending")
 
     setTransactions(oldTransactions => {
@@ -114,6 +147,7 @@ export const Transactions = () => {
         categoryHeader.classList.add("ascending");
         amountHeader.classList.remove("ascending");
         dateHeader.classList.remove("ascending");
+        accountHeader.classList.remove("ascending");
         return newTransactions.sort(function (a, b) {
           if (a.category < b.category) { return -1; }
           if (a.category > b.category) { return 1; }
@@ -129,6 +163,7 @@ export const Transactions = () => {
     const dateHeader = e.target;
     const amountHeader = document.querySelector('.amount-header')
     const categoryHeader = document.querySelector('.category-header')
+    const accountHeader = document.querySelector('.account-header')
     const ascending = dateHeader.classList.contains("ascending")
 
     setTransactions(oldTransactions => {
@@ -137,6 +172,7 @@ export const Transactions = () => {
         dateHeader.classList.add("ascending");
         amountHeader.classList.remove("ascending")
         categoryHeader.classList.remove("ascending")
+        accountHeader.classList.remove("ascending");
         return newTransactions.sort(function (a, b) {
           if (a.date < b.date) { return -1; }
           if (a.date > b.date) { return 1; }
@@ -159,6 +195,7 @@ export const Transactions = () => {
     const amountHeader = e.target;
     const categoryHeader = document.querySelector('.category-header')
     const dateHeader = document.querySelector('.date-header')
+    const accountHeader = document.querySelector('.account-header')
     const ascending = amountHeader.classList.contains("ascending")
 
     setTransactions(oldTransactions => {
@@ -173,6 +210,7 @@ export const Transactions = () => {
         amountHeader.classList.add("ascending")
         categoryHeader.classList.remove("ascending")
         dateHeader.classList.remove("ascending")
+        accountHeader.classList.remove("ascending");
         incomeTransactions.sort((a, b) => a.amount - b.amount);
         expenseTransactions.sort((a, b) => a.amount - b.amount);
         return [...expenseTransactions, ...incomeTransactions]
@@ -217,7 +255,6 @@ export const Transactions = () => {
       }
     })
 
-    debugger
     bankAccounts.forEach(bankAccount => {
       if (bankAccount.institution === transactionToDelete.account) {
         if (transactionToDelete.type === 'income') {
@@ -241,56 +278,89 @@ export const Transactions = () => {
     const bankAccounts = JSON.parse(localStorage.getItem('ExtraAppBankAccounts') || JSON.stringify([]))
     return [...cashAccounts, ...creditAccounts, ...bankAccounts];
   }
+
+  const closeModal = e => {
+    const formContainer = document.querySelector('.transactions-form-container');
+    if (e.target === e.currentTarget) {
+      formContainer.classList.remove('open')
+    }
+  }
+
+  const openModal = () => {
+    const formContainer = document.querySelector('.transactions-form-container');
+    formContainer.classList.add('open')
+  }
   
   return (
-    <div>
-      <h2>Transactions</h2>
-      <form onSubmit={e => handleSubmit(e)}>
-        <select required defaultValue='' name="category" onChange={e => setCategory(e.target.value)}>
-          <option disabled value="">Category</option>
-          <option value="groceries">Groceries</option>
-          <option value="income">Income</option>
-          <option value="personal">Personal</option>
-          <option value="utilities">Utilities</option>
-          <option value="entertainment">Entertainment</option>
-          <option value="other">Other</option>
-        </select>
-        <input required type="number" min='0' step='0.01' value={amount} placeholder="amount" onChange={e => setAmount(e.target.value)} />
-        <input type="date" value={date} onChange={e => setDate(e.target.value)} />
-        <select required defaultValue='' name="account" onChange={e => setAccount(e.target.value)}>
-          <option disabled value="">Choose an account</option>
-          {
-            getAccounts().map((account, i) => {
-              return (
-                <option key={i} value={`${account.institution}`}>{account.institution}</option>
-              )
-            })
-          }
-        </select>
-        <select required defaultValue='' name="type" onChange={e => setType(e.target.value)}>
-          <option disabled value="">Select entry type</option>
-          <option value="expense">Expense</option>
-          <option value="income">Income</option>
-        </select>
-        <input required type="text" value={description} placeholder='Add a description...' onChange={e => setDescription(e.target.value)} />
-        <input type="submit" value="Add Transaction" />
-      </form>
-      <table>
-        <thead>
-          <tr>
-            <th className='category-header' onClick={e => sortCategory(e)}>Category</th>
-            <th className='amount-header' onClick={e => sortAmount(e)}>Amount</th>
-            <th className='date-header' onClick={e => sortDate(e)}>Date</th>
-            <th>Description</th>
-            <th>Options</th>
-          </tr>
-        </thead>
-        <tbody>
-          {
-            transactions.map(transaction => <TransactionItem key={transaction.id} transaction={transaction} handleDelete={handleDelete} />)
-          }
-        </tbody>
-      </table>
+    <div className='transactions-content'>
+      <h2 className='transactions-header'>Transactions</h2>
+      <span className='add-transaction-btn' onClick={openModal}>Add Transaction</span>
+      <div className='transactions-form-container' onClick={e => closeModal(e)}>
+        <form className='transactions-form' onSubmit={e => handleSubmit(e)}>
+          <div className='transaction-form-title-container'>
+            <h2 className='transaction-form-title'>Add a Transaction</h2>
+          </div>
+          <select className='transactions-inputs' required defaultValue='' name="account" onChange={e => setAccount(e.target.value)}>
+            <option disabled value="">Choose an account</option>
+            {
+              getAccounts().map((account, i) => {
+                return (
+                  <option key={i} value={`${account.institution}`}>{account.institution}</option>
+                )
+              })
+            }
+          </select>
+          <select className='transactions-inputs' required defaultValue='' name="category" onChange={e => setCategory(e.target.value)}>
+            <option disabled value="">Category</option>
+            <option value="groceries">Groceries</option>
+            <option value="income">Income</option>
+            <option value="personal">Personal</option>
+            <option value="utilities">Utilities</option>
+            <option value="entertainment">Entertainment</option>
+            <option value="other">Other</option>
+          </select>
+          <div className='transaction-input-container'>
+            <label>Transaction Amount</label>
+            <input className='transactions-inputs' required type="number" min='0' step='0.01' value={amount} placeholder="amount" onChange={e => setAmount(e.target.value)} />
+          </div>
+          <div className='transaction-input-container'>
+            <label>Transaction Date</label>
+            <input className='transactions-inputs transactions-date-input' type="date" value={date} onChange={e => setDate(e.target.value)} />
+          </div>
+          <select className='transactions-inputs' required defaultValue='' name="type" onChange={e => setType(e.target.value)}>
+            <option disabled value="">Select entry type</option>
+            <option value="expense">Expense</option>
+            <option value="income">Income</option>
+          </select>
+          <div className='transaction-input-container'>
+            <label>Description</label>
+            <input className='transactions-inputs' required type="text" value={description} placeholder='Add a description...' onChange={e => setDescription(e.target.value)} />
+          </div>
+          <div className='transactions-button-containers'>
+            <input className='transactions-submit-btn' type="submit" value="Add Transaction" />
+            <span className='transactions-cancel-btn' onClick={e => closeModal(e)}>Cancel</span>
+          </div>
+        </form>
+      </div>
+      <div className='transactions-table-container'>
+        <table className='transactions-table'>
+          <thead>
+            <tr>
+              <th className='table-header account-header' onClick={e => sortAccount(e)}><i className="fas fa-sort"></i>Account</th>
+              <th className='table-header category-header' onClick={e => sortCategory(e)}><i className="fas fa-sort"></i>Category</th>
+              <th className='table-header amount-header' onClick={e => sortAmount(e)}><i className="fas fa-sort"></i>Amount</th>
+              <th className='table-header date-header' onClick={e => sortDate(e)}><i className="fas fa-sort"></i>Date</th>
+              <th className='table-header'>Description</th>
+              <th className='table-header'>Options</th>
+            </tr>
+          </thead>
+          <tbody>
+            {
+              transactions.map(transaction => <TransactionItem key={transaction.id} transaction={transaction} handleDelete={handleDelete} />)
+            }
+          </tbody>
+        </table>
+      </div>
     </div>
   )
 }

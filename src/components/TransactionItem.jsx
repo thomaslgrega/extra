@@ -14,12 +14,13 @@ export const TransactionItem = ({ transaction, handleDelete }) => {
   }
   
   return (
-    <tr>
-      <td>{transaction.category}</td>
-      <td className={`${transaction.type}`}>{checkTypeForAmount()}</td>
-      <td>{transaction.date}</td>
-      <td>{transaction.description}</td>
-      <td onClick={() => handleDelete(transaction.id)}>Delete</td>
+    <tr className='transactions-table-row'>
+      <td className='transactions-table-data' >{transaction.account}</td>
+      <td className='transactions-table-data' >{transaction.category}</td>
+      <td className={`${transaction.type} transactions-table-data`}>{checkTypeForAmount()}</td>
+      <td className='transactions-table-data' >{transaction.date}</td>
+      <td className='transactions-table-data' >{transaction.description}</td>
+      <td className='transactions-table-data' onClick={() => handleDelete(transaction.id)}><i class="fas fa-trash-alt"></i></td>
     </tr>
   )
 }

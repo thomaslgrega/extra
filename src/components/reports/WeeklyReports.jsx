@@ -48,7 +48,7 @@ export const WeeklyReports = () => {
     let total = 0;
     const week = getWeek();
     transactions.forEach(transaction => {
-      if (week.includes(transaction.date)) {
+      if (week.includes(transaction.date) && transaction.type === 'expense') {
         total += parseFloat(transaction.amount);
       }
     })
@@ -63,7 +63,7 @@ export const WeeklyReports = () => {
     week.forEach(day => {
       let expenseForDay = 0;
       transactions.forEach(transaction => {
-        if (transaction.date === day) {
+        if (transaction.date === day && transaction.type === 'expense') {
           expenseForDay += parseFloat(transaction.amount);
         }
       })
@@ -82,7 +82,8 @@ export const WeeklyReports = () => {
         label: 'Weekly Expenses',
         fill: true,
         lineTension: 0.2,
-        backgroundColor: 'rgba(12, 238, 99, 1)',
+        // backgroundColor: 'rgba(12, 238, 99, 1)',
+        backgroundColor: 'tomato',
         borderColor: 'rgba(0, 0, 0, 1)',
         borderWidth: 2,
         data: populateData()

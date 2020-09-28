@@ -9,7 +9,6 @@
   box-sizing: border-box;
   width: 700px;
   margin: 0 auto;
-  /* border: 2px solid lightgray; */
   border-radius: 5px;
   padding: 25px;
 }
@@ -41,7 +40,7 @@
   padding: 0 10px;
 }
 
-.account-header {
+.accounts-header {
   display: inline-block;
   font-size: 34px;
 }
@@ -59,6 +58,7 @@
 
 .add-account-btn:hover {
   background-color: #4aa064;
+  transition-duration: 0.3s;
 }
 
 .summary-title {
@@ -140,11 +140,6 @@
   background: white;
   border-radius: 7px;
   box-shadow: 5px 5px 10px 1px rgba(0,0,0,.5);
-}
-
-.summary-form > input,
-.summary-form > select {
-
 }
 
 .summary-inputs {
