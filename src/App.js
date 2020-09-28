@@ -7,6 +7,7 @@ import './stylesheets/summary.css';
 import './stylesheets/transactions.css';
 import './stylesheets/reports.css';
 import './stylesheets/splash.css';
+import './stylesheets/footer.css';
 import { Summary } from './components/Summary';
 import { Transactions } from './components/Transactions';
 import { Reports } from './components/reports/Reports';
@@ -14,6 +15,7 @@ import { DailyReports } from './components/reports/DailyReports';
 import { WeeklyReports } from './components/reports/WeeklyReports';
 import { MonthlyReports } from './components/reports/MonthlyReports';
 import { Splash } from './components/Splash';
+import { Footer } from './components/Footer';
 
 function App() {
   return (
@@ -28,6 +30,7 @@ function App() {
           <Route path='/report' exact component={DailyReports} />
           <Route path='/report/week' component={WeeklyReports} />
           <Route path='/report/month' component={MonthlyReports} />
+          <Route path='/' exact component={Footer}/>
         </div>
       </HashRouter>
   );

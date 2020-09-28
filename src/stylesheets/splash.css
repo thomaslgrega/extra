@@ -1,19 +1,106 @@
 .splash-header {
   text-align: center;
-  margin-top: 30px;
-  font-size: 46px;
+  margin: 30px 0;
+  font-size: 54px;
   font-weight: 900;
   color: #2b2d42;
 }
 
 .splash-first-container {
+  width: 90%;
+  margin: 0 auto;
   display: flex;
+  justify-content: space-between;
 }
 
 .first-container-left-text {
-  width: 30%;
+  width: 46%;
 }
 
 .first-container-image {
-  width: 70%;
+  background-image: url('../images/weekly-report.png');
+  background-size:contain;
+  background-repeat:no-repeat;
+  width: 50%;
+  height: 550px;
+  margin-top: 30px;
+  /* margin-right: 30px; */
+}
+
+.first-container-span {
+  font-size: 30px;
+  display: inline-block;
+  margin-top: 40px;
+  line-height: 35px;
+}
+
+.splash-try-btn {
+  display: inline-block;
+  text-decoration: none;
+  color: white;
+  background-color: #2b2d42;
+  padding: 15px 30px;
+  margin-top: 50px;
+  border-radius: 35px;
+}
+
+.splash-try-btn:hover {
+  transition-duration: 0.3s;
+  transform: scale(1.2);
+}
+
+.splash-second-container {
+  margin: 50px auto;
+  width: 90%;
+  display: flex;
+  justify-content: center;
+}
+
+.card-container {
+  width: 1000px;
+  display: flex;
+  justify-content: space-between;
+  margin-top: 50px;
+  margin-bottom: 40px;
+}
+
+.second-container-card {
+  width: 300px;
+  height: 250px;
+  border: 1px solid black;
+  border-radius: 15px;
+  box-shadow: 5px 5px 20px 0 rgba(0,0,0,.2);
+  transition-duration: 0.3s;
+  border-top: #2b2d42 solid 15px;
+}
+
+.second-container-card:hover {
+  transition-duration: 0.3s;
+  transform: scale(1.1);
+}
+
+.fa-chart-pie,
+.fa-table,
+.fa-money-bill {
+  color: rgb(10, 173, 72);
+  display: block;
+  margin-top: 40px;
+  font-size: 50px;
+  text-align: center;
+}
+
+.card-spans-title {
+  display: block;
+  text-align: center;
+  font-size: 28px;
+  margin: 25px 20px;
+}
+
+.card-spans {
+  display: block;
+  text-align: center;
+  margin: 25px 20px;
+  font-size: 16px;
+  letter-spacing: 1px;
+  line-height: 20px;
 }

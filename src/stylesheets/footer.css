@@ -1,0 +1,125 @@
+.footer-container {
+  height: 150px;
+  width: 100%;
+  margin-top: 50px;
+}
+
+.footer-verb {
+  font-weight: 600;
+  color: #a2a5a8;
+  letter-spacing: 2px;
+}
+
+.footer-logo {
+  display: inline-block;
+  text-decoration: none;
+  font-weight: 900;
+  letter-spacing: 3px;
+  padding-right: 70px;
+  border-right: 1px solid gray;
+  background-image: linear-gradient(to right, #0066cc, #66b3ff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.footer-personal-link {
+  display: inline-block;
+  width: max-content;
+  font-size: 14px;
+  color: #808385;
+  text-decoration: none;
+}
+
+.footer-personal-link:hover {
+  color: #e7e8e8;
+  text-decoration: underline;
+}
+
+.left-div-title {
+  font-weight: 600;
+  color: #e7e8e8;
+}
+
+.second-band-background {
+  background-color: #2b2d42;
+  height: 120px;
+}
+
+.second-band {
+  width: 700px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  padding-top: 20px;
+}
+
+.second-band-left {
+  display: flex;
+  justify-content: space-between;
+  width: 360px;
+}
+
+.second-band-left-div {
+  display: flex;
+  flex-direction: column;
+  width: 170px;
+  line-height: 20px;
+}
+
+.second-band-right {
+  width: 150px;
+}
+
+.second-band-right-title {
+  color: #e7e8e8;
+  font-weight: 600;
+}
+
+.right-band-link {
+  text-decoration: none;
+  color: #e7e8e8;
+  font-size: 45px;
+}
+
+.right-band-link-angellist {
+  color: #e7e8e8;
+  font-size: 42px;
+  text-decoration: none;
+}
+
+.third-band {
+  width: 100%;
+  height: 25px;
+  display: flex;
+  justify-content: center;
+}
+
+.footer-quick-links {
+  text-decoration: none;
+  display: inline-block;
+  width: max-content;
+  font-size: 14px;
+  color: #808385;
+}
+
+.footer-quick-links:hover {
+  color: #e7e8e8;
+  text-decoration: underline;
+}
+
+.third-band > span,.third-band > a {
+  color: #828282;
+  display: inline-block;
+  font-size: 13px;
+  margin: 5px 10px 0 10px;
+}
+
+.second-band-right-links > a:hover {
+  color: #0577b5;
+}
+
+.second-band-right-links {
+  margin-top: 15px;
+  display: flex;
+  justify-content: space-between;
+}
